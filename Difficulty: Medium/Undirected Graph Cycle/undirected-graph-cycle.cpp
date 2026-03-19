@@ -1,15 +1,36 @@
 class Solution {
   public:
   
-    bool dfs(int u, int parent, vector<vector<int>>&adj, vector<bool>&visited){
+    // bool dfs(int u, int parent, vector<vector<int>>&adj, vector<bool>&visited){
+    //     visited[u]=true;
+        
+    //     for(int v : adj[u]){
+    //         if(!visited[v]){
+    //             if(dfs(v,u,adj,visited))return true;
+    //         }
+    //         else if(v != parent){
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+    bool bfs(int u,vector<vector<int>> &adj, vector<bool> visited){
+        queue<pair<int,int>> q1;
+        q1.push({u,-1});
         visited[u]=true;
         
-        for(int v : adj[u]){
-            if(!visited[v]){
-                if(dfs(v,u,adj,visited))return true;
-            }
-            else if(v != parent){
-                return true;
+        while(!q1.empty()){
+            auto [node,parent]= q1.front();
+            q1.pop();
+            
+            for(int v : adj[node]){
+                if(!visited[v]){
+                    visited[v]=true;
+                    q1.push({v,node});
+                }
+                else if(v != parent){
+                    return true;
+                }
             }
         }
         return false;
@@ -29,7 +50,7 @@ class Solution {
         
         for(int i = 0; i < V; i++){
             if(!visited[i]){
-                if(dfs(i, -1, adj, visited)) return true;
+                if(bfs(i, adj, visited)) return true;
             }
         }
         
